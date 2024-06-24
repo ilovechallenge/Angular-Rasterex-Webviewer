@@ -1,0 +1,39 @@
+.text-right {
+    &.forget-pass {
+      a {
+        font-size: 12px;
+        color: #31bd59;
+        text-decoration: none;
+      }
+    }
+  }
+  
+  .sign-up {
+    
+    a {
+      color: #31bd59;
+      font-weight: 600;
+      text-decoration: none;
+    }
+  }
+  
+  .auth {
+    .auth-card {
+      .auth-avatar {
+        display: flex;
+        justify-content: center;
+        img {
+          width: 100px;
+        }
+      }
+    }
+    input[type="submit"] {
+      background-color: #f0f7f9;
+      border: 1px solid #edf1f2;
+    }
+  }
+  .login {
+    color: #31bd59;
+  }
+  
+  

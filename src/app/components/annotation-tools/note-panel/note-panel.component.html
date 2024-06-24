@@ -1,0 +1,152 @@
+<rx-panel *ngIf="visible" [title]="'Comments ('+GetCommentLength()+')'" (onClose)="onClose()" [draggable]=false>
+    <div class="note-panel-container">
+        <div class="header-section">
+            <div class="search">
+                <img src="/assets/images/search-ico.svg" />
+                <input type="text" placeholder="Search for comments..." [(ngModel)]="search"
+                    (keyup)="onSearch($event)" />
+            </div>
+            <div class="sort">
+                <span>Sort:</span>
+                <rx-dropdown [options]="sortOptions" [value]="sortOptions[0]"
+                    (valueChange)="onSortFieldChanged($event)">
+                </rx-dropdown>
+                <img src="/assets/images/filter-ico.svg" role="button" [class.active]="isFilterActive"
+                    (click)="filterVisible = !filterVisible" />
+            </div>
+        </div>
+
+        <div class="main-section">
+            <div *ngIf="filterVisible">
+                <div (onClose)="filterVisible = false">
+                    <div class="filters-container">
+                        <div class="filters-body">
+                            <label>Created by</label>
+                            <rx-multi-select [options]="createdByFilterOptions" [allSelected]="true"
+                                (selectedChange)="onCreatedByFilterChange($event)">
+                            </rx-multi-select>
+                            <label>Date of notes creation</label>
+                            <rx-date-picker [startDate]="dateFilter.startDate" [endDate]="dateFilter.endDate"
+                                (onSelect)="onDateSelect($event)">
+                            </rx-date-picker>
+                        </div>
+                    </div>
+                    <div class="filters-footer">
+                        <button (click)="onFilterApply()" class="btn btn-primary">Apply</button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!isEmpytyList; else emptyList" class="list">
+                <ng-container *ngFor="let group of list | keyvalue: sortOrder; trackBy: trackByFn ">
+
+                    <h4 class="date">{{group.key}}</h4>
+                    <div *ngFor="let item of group.value" class="note" [class.selected]="item.selected"
+                        [ngClass]="{'is-active': item.markupnumber === activeMarkupNumber}"
+                        (click)="SetActiveCommentThread($event, item.markupnumber, item)">
+                        <div [id]="'note-panel-' + item.markupnumber">
+                            <div *ngIf="item.GetComments().length === 0">
+                                <div class="note-comment-list">
+                                    <div class="note-comment">
+                                        <div class="item-note">
+                                            <div class="item-comment-left">
+                                                <div class="comment-img">
+                                                    <rx-annotation-shape-icon [type]="item.type"
+                                                        [subtype]="item.subtype"></rx-annotation-shape-icon>
+                                                </div>
+                                                <div>
+                                                    <div class="author">{{item.author}}</div>
+                                                    <div class="comments-date-count">
+                                                        <div class="date-and-time">{{item.createdStr}} </div>
+                                                        <div class="comments-count"
+                                                            *ngIf="i === 0 && item.markupnumber !== activeMarkupNumber">
+                                                            <img
+                                                                src="/assets/images/comment-ico.svg" />{{item.GetComments().length}}
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="note-input">
+                                    <input type="text" autofocus [placeholder]="'Add Comments...' "
+                                        [(ngModel)]="note[item.markupnumber]" />
+                                    <img src="/assets/images/redo-ico.svg" role="button"
+                                        [disabled]="!note[item.markupnumber]" (click)="onAddNote(item)" />
+                                </div>
+                            </div>
+                            <div class="note-comment-list" *ngIf="item.GetComments().length > 0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <div *ngFor="let itemNote of item.GetComments();let i = index" class="note-comment">
+                                    <div *ngIf="itemNote" class="item-note">
+                                        <div class="item-comment-left">
+                                            <div class="comment-img">
+                                                <rx-annotation-shape-icon [type]="item.type"
+                                                [subtype]="item.subtype"></rx-annotation-shape-icon>
+                                            </div>
+                                            <div>
+                                                <div class="author">{{item.author}}</div>
+                                                <div class="comments-date-count">
+                                                    <div class="date-and-time">{{item.createdStr}} </div>
+                                                    <div class="comments-count"
+                                                        *ngIf="i === 0 && item.markupnumber !== activeMarkupNumber"><img
+
+                                                            src="/assets/images/comment-ico.svg" />{{item.GetComments().length}}
+                                                    </div>
+                                                </div>
+                                                <p>{{itemNote.value}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="comments-controls">
+                                            <img src="/assets/images/pen-ico.svg" role="button"
+                                                (click)="OnEditComment(item.markupnumber, itemNote)" />
+                                            <img src="/assets/images/trash-ico.svg" role="button"
+                                                (click)="OnRemoveComment(item, itemNote.id, i)" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="note-input" *ngIf="item.GetComments().length > 0">
+                                <input type="text" autofocus
+                                    [placeholder]="item.GetComments().length === 0 ? 'Add Comments...' :'Add reply...'"
+                                    [(ngModel)]="note[item.markupnumber]" />
+                                <img src="/assets/images/redo-ico.svg" role="button"
+                                    [disabled]="!note[item.markupnumber]" (click)="onAddNote(item)" />
+
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <ng-template #emptyList>
+                <div class="empty-list">
+                    <p>
+                        You don’t have any notes yet. Click on the document to create a note.
+                    </p>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</rx-panel>

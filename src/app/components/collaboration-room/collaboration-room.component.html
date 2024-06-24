@@ -1,0 +1,44 @@
+<div class="collaboration-room" *ngIf="!isLoading; else LoadingRoom">
+    <div class="collaboration-title">
+        <h4>Collaboration Room</h4>
+        <img class="close" src="/assets/images/close-modal-ico.svg" (click)="handleCloseRoomModal()" />
+    </div>
+    <div class="collaboration-body">
+        <button (click)="toggleCreateRoom()">Create Room</button>
+        <button (click)="toggleJoinOptions()">Join a running room</button>
+        <button (click)="toggleSavedRooms()">Join a saved room</button>
+    </div>
+    <div class="running-room" *ngIf="showCreateOption;">
+        <h5>Input the room name</h5>
+        <div>
+            <input type="text" [(ngModel)]="roomName">
+            <button (click)="createRoom()">Save</button>
+        </div>
+    </div>
+    <div class="running-room" *ngIf="showJoinOptions;">
+        <h5>Join a running room:</h5>
+        <div *ngIf="runningRooms.length > 0">
+            <button *ngFor="let room of runningRooms" (click)="joinRunningRoom(room.userName)">
+                Join a running room created by {{ room.userName }}
+            </button>
+        </div>
+        <ng-container *ngIf="runningRooms.length === 0" [ngTemplateOutlet]="noRooms" [ngTemplateOutletContext]="{context: 'running'}"></ng-container>
+    </div>
+    <div class="saved-room" *ngIf="showSavedRooms;">
+        <h5>Join a saved room:</h5>
+        <div *ngIf="savedRooms.length > 0">
+            <button *ngFor="let room of savedRooms" (click)="joinSavedRoom(room.userName)">
+                Join a saved room created by {{ room.userName }}
+            </button>
+        </div>
+        <ng-container *ngIf="savedRooms.length === 0" [ngTemplateOutlet]="noRooms" [ngTemplateOutletContext]="{context: 'saved'}"></ng-container>
+    </div>
+    <ng-template #noRooms let-context="context">
+        <p>No {{context}} rooms available.</p>
+    </ng-template>
+</div>
+<ng-template #LoadingRoom>
+    <div class="loading-container">
+        <span>Loading... </span>
+    </div>
+</ng-template>

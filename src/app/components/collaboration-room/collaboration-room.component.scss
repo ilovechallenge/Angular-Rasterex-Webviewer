@@ -1,0 +1,59 @@
+@mixin flex-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.collaboration-room {
+    @include flex-div;
+    padding: 10px;
+    flex-direction: column;
+    .collaboration-title {
+        @include flex-div;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .collaboration-body {
+        @include flex-div;
+        button {
+            width: 33%;
+            height: 70px;
+            margin-right: 3px;
+            background-color: #f0f7f9;
+            border: 1px solid #edf1f2;
+        }
+    }
+
+    .running-room {
+        @include flex-div;
+        flex-direction: column;
+        width: 100%;
+        div {
+            @include flex-div;
+            flex-direction: column;
+            button {
+                width: 80%;
+            }
+        }
+    }
+
+    .saved-room {
+        @include flex-div;
+        flex-direction: column;
+        width: 100%;
+        div {
+            @include flex-div;
+            flex-direction: column;
+            button {
+                width: 80%;
+            }
+        }
+    }
+}
+
+.loading-container {
+    @include flex-div;
+    padding: 10px;
+}

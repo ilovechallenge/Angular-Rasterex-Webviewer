@@ -1,0 +1,56 @@
+<div *ngIf="visible" class="rx-measure-panel-container">
+    <rx-accordion [collapsing]="false" [expandAll]="true">
+        <rx-accordion-item *ngIf="type == MARKUP_TYPES.MEASURE.LENGTH.type" [title]="'Measure type'">
+            <ng-template accordionContent>
+                <div class="btn-group" role="group">
+                    <button [class.selected]="lengthMeasureType == 0" (click)="onLengthMeasureTypeChange(0)">
+                        <img src="/assets/images/measure-length-no-arrow-ico.svg" />
+                        <span>No arrow</span>
+                    </button>
+                    <button [class.selected]="lengthMeasureType == 1" (click)="onLengthMeasureTypeChange(1)">
+                        <img src="/assets/images/measure-length-ico.svg" />
+                        <span>Open Arrow</span>
+                    </button>
+                </div>
+            </ng-template>
+        </rx-accordion-item>
+        <rx-accordion-item [title]="'Colors'">
+            <ng-template accordionContent>
+                <rx-color-picker
+                    [value]="color"
+                    (valueChange)="onColorSelect($event)">
+                </rx-color-picker>
+            </ng-template>
+        </rx-accordion-item>
+        <rx-accordion-item *ngIf="type != MARKUP_TYPES.MEASURE.LENGTH.type" [title]="'Thickness'">
+            <ng-template accordionContent>
+                <div class="slider-container">
+                    <ngx-slider
+                        class="slider"
+                        [(value)]="strokeThickness"
+                        [options]="{floor: 1, ceil: 12, hideLimitLabels: true, hidePointerLabels: true, showSelectionBar: true }"
+                        (userChange)="onStrokeThicknessChange()">
+                    </ngx-slider>
+                    <span class="value">{{strokeThickness}}pt</span>
+                </div>
+            </ng-template>
+        </rx-accordion-item>
+        <rx-accordion-item *ngIf="type != MARKUP_TYPES.MEASURE.LENGTH.type" [title]="'Style'">
+            <ng-template accordionContent>
+                <div style="margin-bottom: 22px;">
+                    <rx-line-style-select
+                        [value]="strokeLineStyle"
+                        (valueChange)="onStrokeLineStyleSelect($event)">
+                    </rx-line-style-select>
+                </div>
+            </ng-template>
+        </rx-accordion-item>
+    </rx-accordion>
+    <div class="snap-section">
+        <span>Snap</span>
+        <rx-switch
+            [checked]="snap"
+            (change)="onSnapChange($event)">
+        </rx-switch>
+    </div>
+</div>
